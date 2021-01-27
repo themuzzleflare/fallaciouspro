@@ -1,0 +1,54 @@
+@font-face {
+    font-family: cousine;
+    font-weight: 400;
+    font-style: normal;
+    src:url(../fonts/Cousine-Regular.ttf)
+}
+
+@font-face {
+    font-family: cousine;
+    font-weight: 400;
+    font-style: italic;
+    src:url(../fonts/Cousine-Italic.ttf)
+}
+
+@font-face {
+    font-family: cousine;
+    font-weight: 700;
+    font-style: normal;
+    src:url(../fonts/Cousine-Bold.ttf)
+}
+
+@font-face {
+    font-family: cousine;
+    font-weight: 700;
+    font-style: italic;
+    src:url(../fonts/Cousine-BoldItalic.ttf)
+}
+
+div#header {
+    color: #fff;
+    text-align:center
+}
+
+img#logo {
+    width: 100px;
+    height: 100px
+}
+
+h1#page-heading {
+    font-weight: 700
+}
+
+a {
+    text-decoration: none
+}
+
+p#subtitle {
+    opacity: .65
+}
+
+body {
+    font-family: cousine;
+    background-color: grey
+}
