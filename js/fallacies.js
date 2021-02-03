@@ -10,37 +10,56 @@ fetch("https://api.apple-cloudkit.com/database/1/iCloud.cloud.tavitian.fallaciou
         query: {
             sortBy: [{
                 fieldName: "name",
-                ascending: !0
+                ascending: true
             }],
             recordType: "Fallacies"
         },
         resultsLimit: 200
     })
-}).then(e => e.json()).then(e => showRecords(e.records)),
-showRecords = (e => {
-    const n = document.querySelector("#records");
-    e.forEach(e => {
-        const t = document.createElement("div"),
-		o = e.fields;
+})
+.then(response => response.json())
+.then(records => showRecords(records.records));
+
+showRecords = records => {
+    const recordsDiv = document.querySelector("#records")
+    
+    const accordionElement = document.createElement("ul")
+    accordionElement.setAttribute("uk-accordion", "")
+    
+    records.forEach(record => {
+        const o = record.fields
+        
+        const accordionListElement = document.createElement("li")
+        const titleElement =  document.createElement("a")
+        
+        titleElement.classList.add("uk-accordion-title")
+        titleElement.innerText = o.name.value
+        
+        const t = document.createElement("div")
+        t.classList.add("uk-accordion-content")
+        
         if (o.hasOwnProperty("name")) {
-            const e = document.createElement("p");
-            e.innerHTML = `<b>Name</b>: ${o.name.value}`,
+            const e = document.createElement("p")
+            e.innerHTML = `<b>Name</b>: ${o.name.value}`
             t.append(e)
         }
+        
         if (o.hasOwnProperty("latinName")) {
             const e = document.createElement("p");
             e.innerHTML = `<b>Latin Name</b>: ${o.latinName.value}`,
             t.append(e)
         }
+        
         if (o.hasOwnProperty("aliases")) {
             const e = o.aliases.value.join(", ").italics(),
-			n = document.createElement("p");
+            n = document.createElement("p");
             n.innerHTML = `<b>Aliases</b>: ${e}`,
             t.append(n)
         }
+        
         if (o.hasOwnProperty("newTerminology")) {
             const e = document.createElement("div"),
-			n = document.createElement("p");
+            n = document.createElement("p");
             n.innerHTML = "<b>New Terminology</b>:";
             const a = document.createElement("ul");
             o.newTerminology.value.forEach(e => {
@@ -52,9 +71,10 @@ showRecords = (e => {
             e.append(n, a),
             t.append(e)
         }
+        
         if (o.hasOwnProperty("logicalForms")) {
             const e = document.createElement("div"),
-			n = document.createElement("p");
+            n = document.createElement("p");
             n.innerHTML = "<b>Logical Forms</b>:";
             const a = document.createElement("ul");
             o.logicalForms.value.forEach(e => {
@@ -66,14 +86,16 @@ showRecords = (e => {
             e.append(n, a),
             t.append(e)
         }
+        
         if (o.hasOwnProperty("description")) {
             const n = document.createElement("p");
             n.innerHTML = `<b>Description</b>: ${o.description.value}`,
             t.append(n)
         }
+        
         if (o.hasOwnProperty("examples")) {
             const e = document.createElement("div"),
-			n = document.createElement("p");
+            n = document.createElement("p");
             n.innerHTML = "<b>Examples</b>:";
             const a = document.createElement("ul");
             o.examples.value.forEach(e => {
@@ -85,9 +107,10 @@ showRecords = (e => {
             e.append(n, a),
             t.append(e)
         }
+        
         if (o.hasOwnProperty("exceptions")) {
             const e = document.createElement("div"),
-			n = document.createElement("p");
+            n = document.createElement("p");
             n.innerHTML = "<b>Exceptions</b>:";
             const a = document.createElement("ul");
             o.exceptions.value.forEach(e => {
@@ -99,14 +122,16 @@ showRecords = (e => {
             e.append(n, a),
             t.append(e)
         }
+        
         if (o.hasOwnProperty("tip")) {
             const e = document.createElement("p");
             e.innerHTML = `<b>Tip</b>: ${o.tip.value}`,
             t.append(e)
         }
+        
         if (o.hasOwnProperty("references")) {
             const e = document.createElement("div"),
-			n = document.createElement("p");
+            n = document.createElement("p");
             n.innerHTML = "<b>References</b>:";
             const a = document.createElement("ul");
             o.references.value.forEach(e => {
@@ -118,11 +143,15 @@ showRecords = (e => {
             e.append(n, a),
             t.append(e)
         }
-        t.style.backgroundColor = "silver",
-        t.style.border = "thin solid #000000",
-        t.style.borderRadius = "20px",
-        t.style.margin = "10px",
-        t.style.padding = "20px",
-        n.append(t)
+        
+        accordionListElement.style.backgroundColor = "silver"
+        accordionListElement.style.border = "thin solid #000000"
+        accordionListElement.style.borderRadius = "20px"
+        accordionListElement.style.margin = "10px"
+        accordionListElement.style.padding = "20px"
+        
+        accordionListElement.append(titleElement, t)
+        accordionElement.append(accordionListElement)
     })
-});
+    recordsDiv.append(accordionElement)
+};

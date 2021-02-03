@@ -27,28 +27,52 @@
 }
 
 div#header {
-    color: #fff;
-    text-align:center
+    font-family: cousine;
+    text-align: center
 }
 
 img#logo {
     width: 100px;
-    height: 100px
+    height: 100px;
 }
 
 h1#page-heading {
-    font-weight: 700
-}
-
-a {
-    text-decoration: none
+    margin-top: 1em;
+    font-family: cousine;
+    font-weight: 700;
+    font-size: xx-large;
+    color: white
+    
 }
 
 p#subtitle {
-    opacity: .65
+    color: white;
+    opacity: 0.65
+}
+
+a.uk-accordion-title {
+    color: black;
+    font-weight: 700;
+}
+
+a {
+    text-decoration: none !important;
+    color: black
+}
+
+li {
+    color: black
+}
+
+p {
+    color: black
 }
 
 body {
-    font-family: cousine;
-    background-color: grey
+    font-family: cousine
+}
+
+html {
+    background-color: grey !important;
+    margin: 0.5em
 }
