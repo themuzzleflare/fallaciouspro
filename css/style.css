@@ -33,7 +33,7 @@ div#header {
 
 img#logo {
     width: 100px;
-    height: 100px;
+    height: 100px
 }
 
 h1#page-heading {
@@ -52,7 +52,7 @@ p#subtitle {
 
 a.uk-accordion-title {
     color: black;
-    font-weight: 700;
+    font-weight: 700
 }
 
 a {
