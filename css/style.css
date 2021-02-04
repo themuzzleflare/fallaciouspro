@@ -26,6 +26,13 @@
     src:url(../fonts/Cousine-BoldItalic.ttf)
 }
 
+nav.uk-navbar-container {
+    border: thin solid black;
+    border-radius: 20px;
+    margin: 10px;
+    margin-bottom: 30px
+}
+
 div#header {
     font-family: cousine;
     text-align: center
