@@ -1,0 +1,23 @@
+{
+    "applinks":{
+        "apps":[
+            
+        ],
+        "details":[
+            {
+                "appID":"JDL5FY6SCC.cloud.tavitian.logicum",
+                "paths":[
+                    "NOT /_/*",
+                    "/*"
+                ]
+            },
+            {
+                "appID":"JDL5FY6SCC.cloud.tavitian.fallaciouspro",
+                "paths":[
+                    "NOT /_/*",
+                    "/*"
+                ]
+            }
+        ]
+    }
+}
