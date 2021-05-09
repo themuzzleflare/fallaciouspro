@@ -12,6 +12,13 @@
                 ]
             },
             {
+                "appID":"JDL5FY6SCC.cloud.tavitian.fallacious",
+                "paths":[
+                    "NOT /_/*",
+                    "/*"
+                ]
+            },
+            {
                 "appID":"JDL5FY6SCC.cloud.tavitian.fallaciouspro",
                 "paths":[
                     "NOT /_/*",
