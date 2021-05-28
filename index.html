@@ -10,6 +10,16 @@
         <script src="js/uikit-icons.min.js"></script>
         <script src="js/fallacies.js"></script>
         <script src="https://js.pusher.com/beams/1.0/push-notifications-cdn.js"></script>
+        <script>
+  const beamsClient = new PusherPushNotifications.Client({
+    instanceId: '0521c573-9214-4673-ba24-20bef24b4490',
+  });
+
+  beamsClient.start()
+    .then(() => beamsClient.addDeviceInterest('hello'))
+    .then(() => console.log('Successfully registered and subscribed!'))
+    .catch(console.error);
+</script>
     </head>
     <body>
         <a id="header-link" href="index.html">
