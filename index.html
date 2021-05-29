@@ -15,10 +15,16 @@
     instanceId: '0521c573-9214-4673-ba24-20bef24b4490',
   });
 
-  beamsClient.start()
-    .then(() => beamsClient.addDeviceInterest('hello'))
-    .then(() => console.log('Successfully registered and subscribed!'))
-    .catch(console.error);
+  beamsClient
+  .start()
+  .then((beamsClient) => beamsClient.getDeviceId())
+  .then((deviceId) =>
+    console.log("Successfully registered with Beams. Device ID:", deviceId)
+  )
+  .then(() => beamsClient.addDeviceInterest("hello"))
+  .then(() => beamsClient.getDeviceInterests())
+  .then((interests) => console.log("Current interests:", interests))
+  .catch(console.error);
 </script>
     </head>
     <body>
