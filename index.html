@@ -14,7 +14,6 @@
   const beamsClient = new PusherPushNotifications.Client({
     instanceId: '0521c573-9214-4673-ba24-20bef24b4490',
   });
-
   beamsClient
   .start()
   .then((beamsClient) => beamsClient.getDeviceId())
