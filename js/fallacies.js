@@ -1,26 +1,55 @@
-fetch("https://api.apple-cloudkit.com/database/1/iCloud.cloud.tavitian.fallaciouspro/production/public/records/query?ckAPIToken=c3bf01204e15c98abe27839e3a38d321cf1f944a1b339e68616d745906787e87", {
-    method: "POST",
-    headers: {
-        "Content-Type": "application/json"
-    },
-    body: JSON.stringify({
-        zoneID: {
-            zoneName: "_defaultZone"
+CloudKit.configure({
+    containers: [{
+        containerIdentifier: 'iCloud.cloud.tavitian.fallaciouspro',
+        apiTokenAuth: {
+            apiToken: 'c3bf01204e15c98abe27839e3a38d321cf1f944a1b339e68616d745906787e87'
         },
-        query: {
-            sortBy: [{
-                fieldName: "name",
-                ascending: true
-            }],
-            recordType: "Fallacies"
-        },
-        resultsLimit: 200
-    })
-})
-.then(response => response.json())
-.then(records => showRecords(records.records));
+        environment: 'production'
+    }]
+});
 
-showRecords = records => {
+var container = CloudKit.getDefaultContainer();
+var database = container.publicCloudDatabase;
+
+container.setUpAuth()
+.then(function(userIdentity) {
+    if(userIdentity) {
+        console.log("Authentication successful");
+        fetchFallacies();
+    } else {
+        console.error("Authentication unsuccessful");
+        process.exit()
+    }
+});
+
+function fetchFallacies() {
+    var query = {
+        recordType: 'Fallacies',
+        sortBy: [
+            {
+                fieldName: 'name',
+                ascending: true
+            }
+        ]
+    }
+    
+    var options = {
+        resultsLimit: 200
+    }
+    
+    database.performQuery(query, options)
+    .then(function(response) {
+        if (response.hasErrors) {
+            console.error("Error");
+            throw response.errors[0];
+        } else {
+            console.log("Success");
+            showRecords(response);
+        }
+    });
+}
+
+function showRecords(response) {
     const recordsDiv = document.querySelector("#records")
     
     const accordionElement = document.createElement("ul")
