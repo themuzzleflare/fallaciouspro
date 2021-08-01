@@ -31,16 +31,14 @@ function fetchFallacies() {
     database.performQuery(query, options)
     .then(function(response) {
         if (response.hasErrors) {
-            console.error("Error");
             throw response.errors[0];
         } else {
-            console.log("Success");
-            showRecords(response);
+            showRecords(response.records);
         }
     });
 }
 
-function showRecords(response) {
+function showRecords(records) {
     const recordsDiv = document.querySelector("#records")
     
     const accordionElement = document.createElement("ul")
