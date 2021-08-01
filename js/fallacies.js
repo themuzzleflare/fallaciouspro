@@ -11,16 +11,7 @@ CloudKit.configure({
 var container = CloudKit.getDefaultContainer();
 var database = container.publicCloudDatabase;
 
-container.setUpAuth()
-.then(function(userIdentity) {
-    if(userIdentity) {
-        console.log("Authentication successful");
-        fetchFallacies();
-    } else {
-        console.error("Authentication unsuccessful");
-        process.exit()
-    }
-});
+fetchFallacies()
 
 function fetchFallacies() {
     var query = {
