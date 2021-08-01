@@ -1,13 +1,3 @@
-CloudKit.configure({
-    containers: [{
-        containerIdentifier: 'iCloud.cloud.tavitian.fallaciouspro',
-        apiTokenAuth: {
-            apiToken: 'c3bf01204e15c98abe27839e3a38d321cf1f944a1b339e68616d745906787e87'
-        },
-        environment: 'production'
-    }]
-});
-
 var container = CloudKit.getDefaultContainer();
 var database = container.publicCloudDatabase;
 
