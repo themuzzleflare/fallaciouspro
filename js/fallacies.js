@@ -1,10 +1,10 @@
 CloudKit.configure({
     containers: [{
-        containerIdentifier: 'iCloud.cloud.tavitian.fallaciouspro',
+        containerIdentifier: "iCloud.cloud.tavitian.fallaciouspro",
         apiTokenAuth: {
-            apiToken: 'c3bf01204e15c98abe27839e3a38d321cf1f944a1b339e68616d745906787e87'
+            apiToken: "c3bf01204e15c98abe27839e3a38d321cf1f944a1b339e68616d745906787e87"
         },
-        environment: 'production'
+        environment: "production"
     }]
 });
 
@@ -15,10 +15,10 @@ fetchFallacies()
 
 function fetchFallacies() {
     var query = {
-        recordType: 'Fallacies',
+        recordType: "Fallacies",
         sortBy: [
             {
-                fieldName: 'name',
+                fieldName: "name",
                 ascending: true
             }
         ]

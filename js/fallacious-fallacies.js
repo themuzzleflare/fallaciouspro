@@ -1,39 +1,48 @@
-fetch("https://api.apple-cloudkit.com/database/1/iCloud.cloud.tavitian.fallacious/production/public/records/query?ckAPIToken=0efa83e61396cb57ec2882998bb8c72fda8ebc1a4b6742bb252b300429b90b1f", {
-    method: "POST",
-    headers: {
-        "Content-Type": "application/json"
-    },
-    body: JSON.stringify({
-        "zoneID": {
-            "zoneName": "_defaultZone"
+CloudKit.configure({
+    containers: [{
+        containerIdentifier: "iCloud.cloud.tavitian.fallacious",
+        apiTokenAuth: {
+            apiToken: "0efa83e61396cb57ec2882998bb8c72fda8ebc1a4b6742bb252b300429b90b1f"
         },
-        "query": {
-            "sortBy": [
-                {
-                    "fieldName": "id",
-                    "ascending": true
-                },
-                {
-                    "fieldName": "number",
-                    "ascending": true
+        environment: "production"
+    }]
+});
+
+var container = CloudKit.getDefaultContainer();
+var database = container.publicCloudDatabase;
+
+fetchFallacies()
+
+function fetchFallacies() {
+    var query = {
+        recordType: "itemData",
+        sortBy: [
+            {
+                fieldName: "id",
+                ascending: true
+            },
+            {
+                fieldName: "number",
+                ascending: true
+            }
+        ],
+        filterBy: [
+            {
+                comparator: "EQUALS",
+                fieldName: "category",
+                fieldValue: {
+                    value: {
+                        recordName: "logical-fallacy",
+                        action: "NONE"
+                    },
+                    type: "REFERENCE"
                 }
-            ],
-            "recordType": "itemData",
-            "filterBy": [
-                {
-                    "comparator": "EQUALS",
-                    "fieldName": "category",
-                    "fieldValue": {
-                        "value": {
-                            "recordName": "logical-fallacy",
-                            "action": "NONE"
-                        },
-                        "type": "REFERENCE"
-                    }
-                }
-            ]
-        },
-        "desiredKeys": [
+            }
+        ]
+    }
+    
+    var options = {
+        desiredKeys: [
             "id",
             "number",
             "name",
@@ -44,14 +53,20 @@ fetch("https://api.apple-cloudkit.com/database/1/iCloud.cloud.tavitian.fallaciou
             "image",
             "isFeatured"
         ],
-        "resultsLimit": 200
-    })
-})
-.then(response => response.json())
-.then(records => showRecords(records.records));
-
-showRecords = records => {
+        resultsLimit: 200
+    }
     
+    database.performQuery(query, options)
+    .then(function(response) {
+        if (response.hasErrors) {
+            throw response.errors[0];
+        } else {
+            showRecords(response.records);
+        }
+    });
+}
+
+function showRecords(records) {
     const recordsDiv = document.querySelector("#fallacious-fallacies");
     
     const accordionElement = document.createElement("ul")
@@ -118,7 +133,7 @@ showRecords = records => {
             
             recordElement.append(exampleElement)
         }
-                    
+        
         accordionListElement.style.backgroundColor = "silver"
         accordionListElement.style.border = "thin solid #000000"
         accordionListElement.style.borderRadius = "20px"
