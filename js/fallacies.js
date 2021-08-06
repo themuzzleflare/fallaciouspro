@@ -41,7 +41,7 @@ function fetchFallacies() {
 
 function appendFallacies(records) {
   var recordsDiv = document.querySelector("#records");
-  var accordionElement = rootAccordionElement();
+  var accordionElement = styledAccordionElement();
   
   records.forEach(record => {
     accordionElement.append(fallacyElement(record));
@@ -50,7 +50,7 @@ function appendFallacies(records) {
   recordsDiv.append(accordionElement);
 };
 
-function rootAccordionElement() {
+function styledAccordionElement() {
   var element = document.createElement("ul");
   element.setAttribute("uk-accordion", "");
   return element;
