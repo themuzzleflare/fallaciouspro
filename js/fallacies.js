@@ -44,10 +44,10 @@ function appendFallacies(records) {
   var recordsDiv = document.querySelector("#records");
   var accordionElement = styledAccordionElement();
   
-  for (record in records) {
+  records.forEach(record => {
     const element = fallacyElement(record);
     accordionElement.append(element);
-  };
+  });
   
   recordsDiv.append(accordionElement);
 };
@@ -153,12 +153,12 @@ function listElement(title, items) {
   var titleElement = document.createElement("p");
   titleElement.innerHTML = `<b>${title}</b>:`;
   var itemsElement = document.createElement("ul");
-  for (item in items) {
+  items.forEach(item => {
     var itemElement = document.createElement("li");
     itemElement.innerText = item;
     itemElement.style.marginBottom = "1em";
     itemsElement.append(itemElement);
-  };
+  });
   divElement.append(titleElement, itemsElement);
   return divElement;
 };
