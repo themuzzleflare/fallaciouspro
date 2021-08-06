@@ -13,6 +13,8 @@ CloudKit.configure({
 var container = CloudKit.getDefaultContainer();
 var database = container.publicCloudDatabase;
 
+fetchFallacies();
+
 function fetchFallacies() {
   var query = {
     recordType: "Fallacies",
@@ -149,5 +151,3 @@ function listElement(title, items) {
   divElement.append(titleElement, itemsElement);
   return divElement;
 };
-
-fetchFallacies();
