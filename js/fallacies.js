@@ -30,7 +30,8 @@ function fetchFallacies() {
     resultsLimit: 200
   };
   
-  database.performQuery(query, options).then(function(response) {
+  database.performQuery(query, options)
+  .then(function(response) {
     if (response.hasErrors) {
       throw response.errors[0];
     } else {
@@ -43,9 +44,10 @@ function appendFallacies(records) {
   var recordsDiv = document.querySelector("#records");
   var accordionElement = styledAccordionElement();
   
-  records.forEach(record => {
-    accordionElement.append(fallacyElement(record));
-  });
+  for (record in records) {
+    const element = fallacyElement(record);
+    accordionElement.append(element);
+  };
   
   recordsDiv.append(accordionElement);
 };
@@ -58,54 +60,63 @@ function styledAccordionElement() {
 
 function fallacyElement(record) {
   const fields = record.fields;
-  
-  var accordionListElement = styledAccordionItemElement();
+  const titleElement = fallacyTitleElement(fields.name.value);
   var contentElement = styledContentElement();
+  var accordionItemElement = styledAccordionItemElement();
   
   if (fields.hasOwnProperty("name")) {
-    contentElement.append(attributeElement("Name", fields.name.value));
+    const element = attributeElement("Name", fields.name.value);
+    contentElement.append(element);
   };
   
   if (fields.hasOwnProperty("latinName")) {
-    contentElement.append(attributeElement("Latin Name", fields.latinName.value));
+    const element = attributeElement("Latin Name", fields.latinName.value);
+    contentElement.append(element);
   };
   
   if (fields.hasOwnProperty("aliases")) {
-    const aliasesDetail = fields.aliases.value.join(", ").italics();
-    contentElement.append(attributeElement("Aliases", aliasesDetail));
+    const detail = fields.aliases.value.join(", ").italics();
+    const element = attributeElement("Aliases", detail);
+    contentElement.append(element);
   };
   
   if (fields.hasOwnProperty("newTerminology")) {
-    contentElement.append(listElement("New Terminology", fields.newTerminology.value));
+    const element = listElement("New Terminology", fields.newTerminology.value);
+    contentElement.append(element);
   };
   
   if (fields.hasOwnProperty("logicalForms")) {
-    contentElement.append(listElement("Logical Forms", fields.logicalForms.value));
+    const element = listElement("Logical Forms", fields.logicalForms.value);
+    contentElement.append(element);
   };
   
   if (fields.hasOwnProperty("description")) {
-    contentElement.append(attributeElement("Description", fields.description.value));
+    const element = attributeElement("Description", fields.description.value);
+    contentElement.append(element);
   };
   
   if (fields.hasOwnProperty("examples")) {
-    contentElement.append(listElement("Examples", fields.examples.value));
+    const element = listElement("Examples", fields.examples.value);
+    contentElement.append(element);
   };
   
   if (fields.hasOwnProperty("exceptions")) {
-    contentElement.append(listElement("Exceptions", fields.exceptions.value));
+    const element = listElement("Exceptions", fields.exceptions.value);
+    contentElement.append(element);
   };
   
   if (fields.hasOwnProperty("tip")) {
-    contentElement.append(attributeElement("Tip", fields.tip.value));
+    const element = attributeElement("Tip", fields.tip.value);
+    contentElement.append(element);
   };
   
   if (fields.hasOwnProperty("references")) {
-    contentElement.append(listElement("References", fields.references.value));
+    const element = listElement("References", fields.references.value);
+    contentElement.append(element);
   };
   
-  accordionListElement.append(fallacyTitleElement(fields.name.value), contentElement);
-  
-  return accordionListElement;
+  accordionItemElement.append(titleElement, contentElement);
+  return accordionItemElement;
 };
 
 function fallacyTitleElement(title) {
@@ -142,12 +153,12 @@ function listElement(title, items) {
   var titleElement = document.createElement("p");
   titleElement.innerHTML = `<b>${title}</b>:`;
   var itemsElement = document.createElement("ul");
-  items.forEach(item => {
+  for (item in items) {
     var itemElement = document.createElement("li");
     itemElement.innerText = item;
     itemElement.style.marginBottom = "1em";
     itemsElement.append(itemElement);
-  });
+  };
   divElement.append(titleElement, itemsElement);
   return divElement;
 };
