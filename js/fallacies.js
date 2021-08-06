@@ -5,7 +5,7 @@ CloudKit.configure({
     containerIdentifier: "iCloud.cloud.tavitian.fallaciouspro",
     environment: "production",
     apiTokenAuth: {
-      apiToken: "e8783e437718ef1d781bef3981ad9eb106a5a8451e546aa4cd121ab6207eeebf"
+      apiToken: "c3bf01204e15c98abe27839e3a38d321cf1f944a1b339e68616d745906787e87"
     }
   }]
 });
