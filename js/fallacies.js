@@ -41,10 +41,7 @@ function fetchFallacies() {
 };
 
 function appendFallacies(records) {
-  var recordsDiv = document.getElementById("recordsroot");
-  var finalAccordion = document.createElement("div");
-  finalAccordion.className = "accordion";
-  finalAccordion.setAttribute("id", "records");
+  var recordsDiv = document.getElementById("records");
   
   records.forEach(record => {
     var accordionElement = document.createElement("div");
@@ -52,10 +49,8 @@ function appendFallacies(records) {
     const titleElement = fallacyTitleElement(record);
     const contentElement = fallacyElement(record);
     accordionElement.append(titleElement, contentElement);
-    finalAccordion.append(accordionElement);
+    recordsDiv.append(accordionElement);
   });
-  
-  recordsDiv.append(finalAccordion);
 };
 
 function fallacyElement(record) {
