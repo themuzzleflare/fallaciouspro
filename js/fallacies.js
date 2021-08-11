@@ -41,29 +41,34 @@ function fetchFallacies() {
 };
 
 function appendFallacies(records) {
-  var recordsDiv = document.querySelector("#records");
+  var recordsDiv = document.getElementById("recordsroot");
+  var finalAccordion = document.createElement("div");
+  finalAccordion.className = "accordion";
+  finalAccordion.setAttribute("id", "records");
   
   records.forEach(record => {
     var accordionElement = document.createElement("div");
     accordionElement.className = "accordion-item";
-    const titleElement = fallacyTitleElement(record.fields.name.value);
+    const titleElement = fallacyTitleElement(record);
     const contentElement = fallacyElement(record);
     accordionElement.append(titleElement, contentElement);
-    recordsDiv.append(accordionElement);
+    finalAccordion.append(accordionElement);
   });
+  
+  recordsDiv.append(finalAccordion);
 };
 
 function fallacyElement(record) {
   const fields = record.fields;
   
-  var headingId = "heading" + fields.name.value;
-  var collapseId = "collapse" + fields.name.value;
+  var headingId = "heading" + record.recordName;
+  var collapseId = "collapse" + record.recordName;
   
   var divElement = document.createElement("div");
   divElement.className = "accordion-collapse collapse";
   divElement.setAttribute("id", collapseId);
   divElement.setAttribute("aria-labelledby", headingId);
-  divElement.setAttribute("data-parent", "#records");
+  divElement.setAttribute("data-bs-parent", "#records");
   var bodyDiv = document.createElement("div");
   bodyDiv.className = "accordion-body";
   
@@ -122,20 +127,20 @@ function fallacyElement(record) {
   return divElement;
 };
 
-function fallacyTitleElement(title) {
-  var headingId = "heading" + title;
-  var collapseId = "collapse" + title;
+function fallacyTitleElement(record) {
+  var headingId = "heading" + record.recordName;
+  var collapseId = "collapse" + record.recordName;
   var headingElement = document.createElement("h2");
   var buttonElement = document.createElement("button");
   headingElement.className = "accordion-header";
   headingElement.setAttribute("id", headingId);
   buttonElement.className = "accordion-button collapsed"
   buttonElement.setAttribute("type", "button");
-  buttonElement.setAttribute("data-toggle", "collapse");
-  buttonElement.setAttribute("data-target", "#" + collapseId);
+  buttonElement.setAttribute("data-bs-toggle", "collapse");
+  buttonElement.setAttribute("data-bs-target", "#" + collapseId);
   buttonElement.setAttribute("aria-expanded", "false");
   buttonElement.setAttribute("aria-controls", collapseId);
-  buttonElement.textContent = title;
+  buttonElement.textContent = record.fields.name.value;
   headingElement.append(buttonElement);
   return headingElement;
 };
