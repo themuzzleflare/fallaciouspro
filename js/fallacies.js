@@ -63,7 +63,7 @@ function fallacyElement(record) {
   divElement.className = "accordion-collapse collapse";
   divElement.setAttribute("id", collapseId);
   divElement.setAttribute("aria-labelledby", headingId);
-  divElement.setAttribute("data-bs-parent", "#records");
+  divElement.setAttribute("data-parent", "#records");
   var bodyDiv = document.createElement("div");
   bodyDiv.className = "accordion-body";
   
@@ -131,8 +131,8 @@ function fallacyTitleElement(title) {
   headingElement.setAttribute("id", headingId);
   buttonElement.className = "accordion-button collapsed"
   buttonElement.setAttribute("type", "button");
-  buttonElement.setAttribute("data-bs-toggle", "collapse");
-  buttonElement.setAttribute("data-bs-target", "#" + collapseId);
+  buttonElement.setAttribute("data-toggle", "collapse");
+  buttonElement.setAttribute("data-target", "#" + collapseId);
   buttonElement.setAttribute("aria-expanded", "false");
   buttonElement.setAttribute("aria-controls", collapseId);
   buttonElement.textContent = title;
