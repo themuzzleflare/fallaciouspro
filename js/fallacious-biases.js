@@ -3,10 +3,10 @@
 CloudKit.configure({
   containers: [{
     containerIdentifier: "iCloud.cloud.tavitian.fallacious",
+    environment: "production",
     apiTokenAuth: {
       apiToken: "0efa83e61396cb57ec2882998bb8c72fda8ebc1a4b6742bb252b300429b90b1f"
-    },
-    environment: "production"
+    }
   }]
 });
 
@@ -41,7 +41,7 @@ function fetchBiases() {
         }
       }
     ]
-  }
+  };
   
   var options = {
     desiredKeys: [
@@ -56,7 +56,7 @@ function fetchBiases() {
       "isFeatured"
     ],
     resultsLimit: 200
-  }
+  };
   
   database.performQuery(query, options)
   .then(function(response) {
@@ -64,9 +64,9 @@ function fetchBiases() {
       throw response.errors[0];
     } else {
       renderBiases(response.records);
-    }
+    };
   })
-}
+};
 
 function renderBiases(records) {
   var recordsElement = document.getElementById("records");
