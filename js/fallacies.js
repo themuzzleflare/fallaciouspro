@@ -5,7 +5,7 @@ CloudKit.configure({
     containerIdentifier: "iCloud.cloud.tavitian.fallaciouspro",
     environment: "production",
     apiTokenAuth: {
-      apiToken: "c3bf01204e15c98abe27839e3a38d321cf1f944a1b339e68616d745906787e87"
+      apiToken: "7eab7405b6e89b7e9e36674382bc7b3a86f8427efe2bc4c2798e2abd2e79815a"
     }
   }]
 });
@@ -13,31 +13,50 @@ CloudKit.configure({
 var container = CloudKit.getDefaultContainer();
 var database = container.publicCloudDatabase;
 
+pageIsLoading(true);
 fetchFallacies();
 
-function fetchFallacies() {
-  var query = {
-    recordType: "Fallacies",
-    sortBy: [
-      {
-        fieldName: "name",
-        ascending: true
-      }
-    ]
-  };
+function fetchFallacies(queryResponse) {
+  var query;
+  var options;
   
-  var options = {
-    resultsLimit: 200
-  };
+  if (queryResponse) {
+    query = queryResponse;
+    options = null;
+  } else {
+    query = {
+      recordType: "Fallacies",
+      sortBy: [
+        {
+          fieldName: "name",
+          ascending: true
+        }
+      ]
+    };
+    options = {
+      resultsLimit: 200
+    };
+  }
   
   database.performQuery(query, options)
   .then(function(response) {
     if (response.hasErrors) {
       throw response.errors[0];
-    } else {
+    } else if (response.isQueryResponse) {
       renderFallacies(response.records);
+      if (response.moreComing) {
+        fetchFallacies(response);
+      } else {
+        pageIsLoading(false);
+      }
     };
-  });
+  })
+  .catch(function(error) {
+    pageIsLoading(false);
+    if (error.isCKError) {
+      newAlert(error.ckErrorCode, error.reason, "danger");
+    };
+  })
 };
 
 function renderFallacies(records) {
@@ -149,10 +168,38 @@ function listElement(title, items) {
   var itemsElement = document.createElement("ul");
   items.forEach(item => {
     var itemElement = document.createElement("li");
-    itemElement.innerText = item;
+    itemElement.textContent = item;
     itemsElement.append(itemElement);
   });
   titleElement.innerHTML = "<strong>" + title + "</strong>:";
   divElement.append(titleElement, itemsElement);
   return divElement;
+};
+
+function newAlert(heading, message, type) {
+  var alertPlaceholder = document.getElementById("alertPlaceholder");
+  var alertElement = document.createElement("div");
+  var headingElement = document.createElement("h4");
+  var messageElement = document.createElement("p");
+  var buttonElement = document.createElement("button");
+  alertElement.className = "alert alert-" + type + " alert-dismissible";
+  alertElement.setAttribute("role", "alert");
+  headingElement.className = "alert-heading";
+  headingElement.textContent = heading;
+  messageElement.textContent = message;
+  buttonElement.className = "btn-close";
+  buttonElement.setAttribute("type", "button");
+  buttonElement.setAttribute("data-bs-dismiss", "alert");
+  buttonElement.setAttribute("aria-label", "Close");
+  alertElement.append(headingElement, messageElement, buttonElement);
+  alertPlaceholder.append(alertElement);
+};
+
+function pageIsLoading(bool) {
+  var spinnerElement = document.getElementById("spinner");
+  if (bool) {
+    spinnerElement.style.visibility = "visible";
+  } else {
+    spinnerElement.style.visibility = "hidden";
+  };
 };
