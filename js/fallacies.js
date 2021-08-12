@@ -168,7 +168,7 @@ function listElement(title, items) {
   var itemsElement = document.createElement("ul");
   items.forEach(item => {
     var itemElement = document.createElement("li");
-    itemElement.textContent = item;
+    itemElement.innerText = item;
     itemsElement.append(itemElement);
   });
   titleElement.innerHTML = "<strong>" + title + "</strong>:";
