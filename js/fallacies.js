@@ -198,8 +198,8 @@ function newAlert(heading, message, type) {
 function pageIsLoading(bool) {
   var spinnerElement = document.getElementById("spinner");
   if (bool) {
-    spinnerElement.style.visibility = "visible";
+    spinnerElement.removeAttribute("hidden");
   } else {
-    spinnerElement.style.visibility = "hidden";
+    spinnerElement.setAttribute("hidden", "");
   };
 };
