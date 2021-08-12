@@ -1,1 +1,155 @@
-"use strict";CloudKit.configure({containers:[{containerIdentifier:"iCloud.cloud.tavitian.fallacious",apiTokenAuth:{apiToken:"0efa83e61396cb57ec2882998bb8c72fda8ebc1a4b6742bb252b300429b90b1f"},environment:"production"}]});let container=CloudKit.getDefaultContainer(),database=container.publicCloudDatabase;function fetchBiases(){database.performQuery({recordType:"itemData",sortBy:[{fieldName:"id",ascending:!0},{fieldName:"number",ascending:!0}],filterBy:[{comparator:"EQUALS",fieldName:"category",fieldValue:{value:{recordName:"cognitive-bias",action:"NONE"},type:"REFERENCE"}}]},{desiredKeys:["id","number","name","categoryName","shortDescription","longDescription","example","image","isFeatured"],resultsLimit:200}).then(function(e){if(e.hasErrors)throw e.errors[0];showRecords(e.records)})}function showRecords(e){const t=document.querySelector("#fallacious-biases"),n=document.createElement("ul");n.setAttribute("uk-accordion",""),e.forEach(e=>{const t=e.fields,a=document.createElement("li"),o=document.createElement("a");o.classList.add("uk-accordion-title"),o.innerText=t.name.value;const r=document.createElement("div");if(r.classList.add("uk-accordion-content"),t.hasOwnProperty("image")){const e=document.createElement("img");e.src=`${t.image.value.downloadURL}`,e.width="100",e.height="100",r.append(e)}if(t.hasOwnProperty("name")){const e=document.createElement("p");e.innerHTML=`<b>Name</b>: ${t.name.value}`,r.append(e)}if(t.hasOwnProperty("categoryName")){const e=document.createElement("p");e.innerHTML=`<b>Category</b>: ${t.categoryName.value}`,r.append(e)}if(t.hasOwnProperty("shortDescription")){const e=document.createElement("p");e.innerHTML=`<b>Short Description</b>: ${t.shortDescription.value}`,r.append(e)}if(t.hasOwnProperty("longDescription")){const e=document.createElement("p");e.innerHTML=`<b>Long Description</b>: ${t.longDescription.value}`,r.append(e)}if(t.hasOwnProperty("example")){const e=document.createElement("p");e.innerHTML=`<b>Solution</b>: ${t.example.value}`,r.append(e)}a.style.backgroundColor="silver",a.style.border="thin solid #000000",a.style.borderRadius="20px",a.style.margin="10px",a.style.padding="20px",a.append(o,r),n.append(a)}),t.append(n)}fetchBiases();
+"use strict";
+
+CloudKit.configure({
+  containers: [{
+    containerIdentifier: "iCloud.cloud.tavitian.fallacious",
+    apiTokenAuth: {
+      apiToken: "0efa83e61396cb57ec2882998bb8c72fda8ebc1a4b6742bb252b300429b90b1f"
+    },
+    environment: "production"
+  }]
+});
+
+var container = CloudKit.getDefaultContainer();
+var database = container.publicCloudDatabase;
+
+fetchBiases();
+
+function fetchBiases() {
+  var query = {
+    recordType: "itemData",
+    sortBy: [
+      {
+        fieldName: "id",
+        ascending: true
+      },
+      {
+        fieldName: "number",
+        ascending: true
+      }
+    ],
+    filterBy: [
+      {
+        fieldName: "category",
+        comparator: "EQUALS",
+        fieldValue: {
+          value: {
+            recordName: "cognitive-bias",
+            action: "NONE"
+          },
+          type: "REFERENCE"
+        }
+      }
+    ]
+  }
+  
+  var options = {
+    desiredKeys: [
+      "id",
+      "number",
+      "name",
+      "categoryName",
+      "shortDescription",
+      "longDescription",
+      "example",
+      "image",
+      "isFeatured"
+    ],
+    resultsLimit: 200
+  }
+  
+  database.performQuery(query, options)
+  .then(function(response) {
+    if (response.hasErrors) {
+      throw response.errors[0];
+    } else {
+      renderBiases(response.records);
+    }
+  })
+}
+
+function renderBiases(records) {
+  var recordsElement = document.getElementById("records");
+  records.forEach(record => {
+    const headerElement = biasHeaderElement(record);
+    const contentElement = biasContentElement(record);
+    var itemElement = document.createElement("div");
+    itemElement.className = "accordion-item";
+    itemElement.append(headerElement, contentElement);
+    recordsElement.append(itemElement);
+  });
+};
+
+function biasHeaderElement(record) {
+  const headingId = "heading" + record.recordName;
+  const collapseId = "collapse" + record.recordName;
+  var headerElement = document.createElement("h2");
+  var buttonElement = document.createElement("button");
+  var imageElement = document.createElement("img");
+  var nameElement = document.createElement("p");
+  var stackElement = document.createElement("div");
+  stackElement.className = "hstack gap-3";
+  imageElement.src = record.fields.image.value.downloadURL;
+  imageElement.width = "50";
+  imageElement.height = "50";
+  nameElement.innerText = record.fields.name.value;
+  headerElement.className = "accordion-header";
+  headerElement.setAttribute("id", headingId);
+  buttonElement.className = "accordion-button collapsed";
+  buttonElement.setAttribute("type", "button");
+  buttonElement.setAttribute("data-bs-toggle", "collapse");
+  buttonElement.setAttribute("data-bs-target", "#" + collapseId);
+  buttonElement.setAttribute("aria-expanded", "false");
+  buttonElement.setAttribute("aria-controls", collapseId);
+  stackElement.append(imageElement, nameElement);
+  buttonElement.append(stackElement);
+  headerElement.append(buttonElement);
+  return headerElement;
+};
+
+function biasContentElement(record) {
+  const fields = record.fields;
+  const headingId = "heading" + record.recordName;
+  const collapseId = "collapse" + record.recordName;
+  var collapseElement = document.createElement("div");
+  var bodyElement = document.createElement("div");
+  collapseElement.className = "accordion-collapse collapse";
+  collapseElement.setAttribute("id", collapseId);
+  collapseElement.setAttribute("aria-labelledby", headingId);
+  collapseElement.setAttribute("data-bs-parent", "#records");
+  bodyElement.className = "accordion-body";
+  
+  if (fields.hasOwnProperty("name")) {
+    const element = attributeElement("Name", fields.name.value);
+    bodyElement.append(element);
+  };
+  
+  if (fields.hasOwnProperty("categoryName")) {
+    const element = attributeElement("Category", fields.categoryName.value);
+    bodyElement.append(element);
+  };
+  
+  if (fields.hasOwnProperty("shortDescription")) {
+    const element = attributeElement("Short Description", fields.shortDescription.value);
+    bodyElement.append(element);
+  };
+  
+  if (fields.hasOwnProperty("longDescription")) {
+    const element = attributeElement("Long Description", fields.longDescription.value);
+    bodyElement.append(element);
+  };
+  
+  if (fields.hasOwnProperty("example")) {
+    const element = attributeElement("Solution", fields.example.value);
+    bodyElement.append(element);
+  };
+  
+  collapseElement.append(bodyElement);
+  return collapseElement;
+};
+
+function attributeElement(title, detail) {
+  var element = document.createElement("p");
+  element.innerHTML = "<strong>" + title + "</strong>: " + detail;
+  return element;
+};

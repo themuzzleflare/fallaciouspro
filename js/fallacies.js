@@ -35,128 +35,124 @@ function fetchFallacies() {
     if (response.hasErrors) {
       throw response.errors[0];
     } else {
-      appendFallacies(response.records);
+      renderFallacies(response.records);
     };
   });
 };
 
-function appendFallacies(records) {
-  var recordsDiv = document.getElementById("records");
-  
+function renderFallacies(records) {
+  var recordsElement = document.getElementById("records");
   records.forEach(record => {
-    var accordionElement = document.createElement("div");
-    accordionElement.className = "accordion-item";
-    const titleElement = fallacyTitleElement(record);
-    const contentElement = fallacyElement(record);
-    accordionElement.append(titleElement, contentElement);
-    recordsDiv.append(accordionElement);
+    const headerElement = fallacyHeaderElement(record);
+    const contentElement = fallacyContentElement(record);
+    var itemElement = document.createElement("div");
+    itemElement.className = "accordion-item";
+    itemElement.append(headerElement, contentElement);
+    recordsElement.append(itemElement);
   });
 };
 
-function fallacyElement(record) {
-  const fields = record.fields;
-  
-  var headingId = "heading" + record.recordName;
-  var collapseId = "collapse" + record.recordName;
-  
-  var divElement = document.createElement("div");
-  divElement.className = "accordion-collapse collapse";
-  divElement.setAttribute("id", collapseId);
-  divElement.setAttribute("aria-labelledby", headingId);
-  divElement.setAttribute("data-bs-parent", "#records");
-  var bodyDiv = document.createElement("div");
-  bodyDiv.className = "accordion-body";
-  
-  if (fields.hasOwnProperty("name")) {
-    const element = attributeElement("Name", fields.name.value);
-    bodyDiv.append(element);
-  };
-  
-  if (fields.hasOwnProperty("latinName")) {
-    const element = attributeElement("Latin Name", fields.latinName.value);
-    bodyDiv.append(element);
-  };
-  
-  if (fields.hasOwnProperty("aliases")) {
-    const detail = fields.aliases.value.join(", ").italics();
-    const element = attributeElement("Aliases", detail);
-    bodyDiv.append(element);
-  };
-  
-  if (fields.hasOwnProperty("newTerminology")) {
-    const element = listElement("New Terminology", fields.newTerminology.value);
-    bodyDiv.append(element);
-  };
-  
-  if (fields.hasOwnProperty("logicalForms")) {
-    const element = listElement("Logical Forms", fields.logicalForms.value);
-    bodyDiv.append(element);
-  };
-  
-  if (fields.hasOwnProperty("description")) {
-    const element = attributeElement("Description", fields.description.value);
-    bodyDiv.append(element);
-  };
-  
-  if (fields.hasOwnProperty("examples")) {
-    const element = listElement("Examples", fields.examples.value);
-    bodyDiv.append(element);
-  };
-  
-  if (fields.hasOwnProperty("exceptions")) {
-    const element = listElement("Exceptions", fields.exceptions.value);
-    bodyDiv.append(element);
-  };
-  
-  if (fields.hasOwnProperty("tip")) {
-    const element = attributeElement("Tip", fields.tip.value);
-    bodyDiv.append(element);
-  };
-  
-  if (fields.hasOwnProperty("references")) {
-    const element = listElement("References", fields.references.value);
-    bodyDiv.append(element);
-  };
-  
-  divElement.append(bodyDiv);
-  return divElement;
-};
-
-function fallacyTitleElement(record) {
-  var headingId = "heading" + record.recordName;
-  var collapseId = "collapse" + record.recordName;
-  var headingElement = document.createElement("h2");
+function fallacyHeaderElement(record) {
+  const headingId = "heading" + record.recordName;
+  const collapseId = "collapse" + record.recordName;
+  var headerElement = document.createElement("h2");
   var buttonElement = document.createElement("button");
-  headingElement.className = "accordion-header";
-  headingElement.setAttribute("id", headingId);
-  buttonElement.className = "accordion-button collapsed"
+  headerElement.className = "accordion-header";
+  headerElement.setAttribute("id", headingId);
+  buttonElement.className = "accordion-button collapsed";
   buttonElement.setAttribute("type", "button");
   buttonElement.setAttribute("data-bs-toggle", "collapse");
   buttonElement.setAttribute("data-bs-target", "#" + collapseId);
   buttonElement.setAttribute("aria-expanded", "false");
   buttonElement.setAttribute("aria-controls", collapseId);
   buttonElement.textContent = record.fields.name.value;
-  headingElement.append(buttonElement);
-  return headingElement;
+  headerElement.append(buttonElement);
+  return headerElement;
+};
+
+function fallacyContentElement(record) {
+  const fields = record.fields;
+  const headingId = "heading" + record.recordName;
+  const collapseId = "collapse" + record.recordName;
+  var collapseElement = document.createElement("div");
+  var bodyElement = document.createElement("div");
+  collapseElement.className = "accordion-collapse collapse";
+  collapseElement.setAttribute("id", collapseId);
+  collapseElement.setAttribute("aria-labelledby", headingId);
+  collapseElement.setAttribute("data-bs-parent", "#records");
+  bodyElement.className = "accordion-body";
+  
+  if (fields.hasOwnProperty("name")) {
+    const element = attributeElement("Name", fields.name.value);
+    bodyElement.append(element);
+  };
+  
+  if (fields.hasOwnProperty("latinName")) {
+    const element = attributeElement("Latin Name", fields.latinName.value);
+    bodyElement.append(element);
+  };
+  
+  if (fields.hasOwnProperty("aliases")) {
+    const detail = fields.aliases.value.join(", ").italics();
+    const element = attributeElement("Aliases", detail);
+    bodyElement.append(element);
+  };
+  
+  if (fields.hasOwnProperty("newTerminology")) {
+    const element = listElement("New Terminology", fields.newTerminology.value);
+    bodyElement.append(element);
+  };
+  
+  if (fields.hasOwnProperty("logicalForms")) {
+    const element = listElement("Logical Forms", fields.logicalForms.value);
+    bodyElement.append(element);
+  };
+  
+  if (fields.hasOwnProperty("description")) {
+    const element = attributeElement("Description", fields.description.value);
+    bodyElement.append(element);
+  };
+  
+  if (fields.hasOwnProperty("examples")) {
+    const element = listElement("Examples", fields.examples.value);
+    bodyElement.append(element);
+  };
+  
+  if (fields.hasOwnProperty("exceptions")) {
+    const element = listElement("Exceptions", fields.exceptions.value);
+    bodyElement.append(element);
+  };
+  
+  if (fields.hasOwnProperty("tip")) {
+    const element = attributeElement("Tip", fields.tip.value);
+    bodyElement.append(element);
+  };
+  
+  if (fields.hasOwnProperty("references")) {
+    const element = listElement("References", fields.references.value);
+    bodyElement.append(element);
+  };
+  
+  collapseElement.append(bodyElement);
+  return collapseElement;
 };
 
 function attributeElement(title, detail) {
   var element = document.createElement("p");
-  element.innerHTML = `<b>${title}</b>: ${detail}`;
+  element.innerHTML = "<strong>" + title + "</strong>: " + detail;
   return element;
 };
 
 function listElement(title, items) {
   var divElement = document.createElement("div");
   var titleElement = document.createElement("p");
-  titleElement.innerHTML = `<b>${title}</b>:`;
   var itemsElement = document.createElement("ul");
   items.forEach(item => {
     var itemElement = document.createElement("li");
     itemElement.innerText = item;
-    itemElement.style.marginBottom = "1em";
     itemsElement.append(itemElement);
   });
+  titleElement.innerHTML = "<strong>" + title + "</strong>:";
   divElement.append(titleElement, itemsElement);
   return divElement;
 };
