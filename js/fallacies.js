@@ -19,7 +19,7 @@ fetchFallacies();
 function fetchFallacies(queryResponse) {
   var query;
   var options;
-  
+
   if (queryResponse) {
     query = queryResponse;
     options = null;
@@ -37,7 +37,7 @@ function fetchFallacies(queryResponse) {
       resultsLimit: 200
     };
   }
-  
+
   database.performQuery(query, options)
   .then(function(response) {
     if (response.hasErrors) {
@@ -100,58 +100,58 @@ function fallacyContentElement(record) {
   collapseElement.setAttribute("aria-labelledby", headingId);
   collapseElement.setAttribute("data-bs-parent", "#records");
   bodyElement.className = "accordion-body";
-  
+
   if (fields.hasOwnProperty("name")) {
     const element = attributeElement("Name", fields.name.value);
     bodyElement.append(element);
   };
-  
+
   if (fields.hasOwnProperty("latinName")) {
     const element = attributeElement("Latin Name", fields.latinName.value);
     bodyElement.append(element);
   };
-  
+
   if (fields.hasOwnProperty("aliases")) {
     const detail = fields.aliases.value.join(", ").italics();
     const element = attributeElement("Aliases", detail);
     bodyElement.append(element);
   };
-  
+
   if (fields.hasOwnProperty("newTerminology")) {
     const element = listElement("New Terminology", fields.newTerminology.value);
     bodyElement.append(element);
   };
-  
+
   if (fields.hasOwnProperty("logicalForms")) {
     const element = listElement("Logical Forms", fields.logicalForms.value);
     bodyElement.append(element);
   };
-  
+
   if (fields.hasOwnProperty("description")) {
     const element = attributeElement("Description", fields.description.value);
     bodyElement.append(element);
   };
-  
+
   if (fields.hasOwnProperty("examples")) {
     const element = listElement("Examples", fields.examples.value);
     bodyElement.append(element);
   };
-  
+
   if (fields.hasOwnProperty("exceptions")) {
     const element = listElement("Exceptions", fields.exceptions.value);
     bodyElement.append(element);
   };
-  
+
   if (fields.hasOwnProperty("tip")) {
     const element = attributeElement("Tip", fields.tip.value);
     bodyElement.append(element);
   };
-  
+
   if (fields.hasOwnProperty("references")) {
     const element = listElement("References", fields.references.value);
     bodyElement.append(element);
   };
-  
+
   collapseElement.append(bodyElement);
   return collapseElement;
 };
